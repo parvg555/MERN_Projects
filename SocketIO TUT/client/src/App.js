@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import io from 'socket.io-client'
 
 let socket;
-const CONNECTION_PORT = "http://localhost:8001/"
+const CONNECTION_PORT = "http://192.168.1.12:8001/"
 
 function App() {
 

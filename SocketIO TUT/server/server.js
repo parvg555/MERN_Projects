@@ -14,16 +14,16 @@ app.use(Cors());
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors : {
-        origin:"http://localhost:3000",
-        methods: ["GET","POST"]
-    }
+        origin:"*",
+    },
 });
 
 app.get("/",(req,res) => {
     return res.send("hello ji");
 })
 
-io.on("connection", (socket) => {
+io.sockets.on("connection", (socket) => {
+    console.log("NEW CONNECTION")
     console.log(socket.id);
     socket.on("join_room" ,(data) => {
         socket.join(data);
@@ -33,6 +33,11 @@ io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
         console.log(data);
         socket.to(data.room).emit("receive_message", data.content);
+    })
+
+    socket.on("message", (data) => {
+        console.log(data);
+        socket.emit("message",data);
     })
 
     socket.on("disconnect" , () => {
